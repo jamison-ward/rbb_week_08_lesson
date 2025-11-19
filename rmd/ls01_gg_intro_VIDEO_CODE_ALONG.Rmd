@@ -7,6 +7,8 @@ output:
     toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, eval = F, include = F}
@@ -88,7 +90,7 @@ Take a moment to explore the data:
 
 ```{r}
 # Print Niger measles (nigerm) data frame
-nigerm
+tibble(nigerm)
 ```
 
 The **`nigerm`** data frame has 4 **variables** (or columns):
@@ -190,7 +192,7 @@ Take a look at `nigerm96`:
 
 ```{r}
 # Print nigerm96
-nigerm96
+print(nigerm96)
 ```
 
 We will use **incremental composition**: adding elements to a plot incrementally.
@@ -203,7 +205,7 @@ We will use **incremental composition**: adding elements to a plot incrementally
 
 ```{r}
 # Call the `ggplot()` function
-
+ggplot()
 ```
 
 • Results a blank canvas
@@ -216,7 +218,7 @@ Supply the data frame to `ggplot()` with the `data` argument.
 
 ```{r}
 # Provide data frame with `data = DF_NAME`
-ggplot() 
+ggplot(data = nigerm96) 
 ```
 
 • The plot is still blank
@@ -237,7 +239,9 @@ Tell `ggplot()` which x and y-axis variables to to plot my adding a `mapping` ar
 
 ```{r}
 # Define variables with `mapping = aes(x = VAR1, y = VAR2)`:
-ggplot(data = nigerm96)
+ggplot(data = nigerm96,
+       mapping = aes(x = week, y = cases))
+  
 ```
 
 • Axes have scales, titles, and labels
@@ -253,7 +257,8 @@ ggplot(data = nigerm96)
 # Specify plot type with `+ geom_point()` for scatter plot
 ggplot(data = nigerm96, 
        mapping = aes(x = week,
-                     y = cases))
+                     y = cases)) + 
+  geom_point()
 ```
 
 Now we have a complete plot!
@@ -285,13 +290,17 @@ Using the `nigerm04` data frame, write `ggplot` code that will create a scatter 
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_point()
 ```
 
 ```{r}
 # When you think you have the right answer, submit it by replacing "YOUR ANSWER HERE" with your code, and run those lines.
 
-nigerm04_scatter <- ggplot()
+nigerm04_scatter <- ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_point()
 
 # Make sure that "nigerm04_scatter" appears in your Environment tab.
 ```
@@ -342,7 +351,7 @@ ggplot(data = nigerm96,
 ```{r}
 # Change x-axis mapping 
 ggplot(data = nigerm96, 
-       mapping = aes(x = week, 
+       mapping = aes(x = region, 
                      y = cases)) +
   geom_point()
 ```
@@ -367,7 +376,7 @@ If we change the `geom_*` function of the original scatter plot from `geom_point
 ggplot(data = nigerm96, 
        mapping = aes(x = week, 
                      y = cases)) +
-  geom_point()
+  geom_col()
 ```
 
 • We only changed the the `geom_*` function but data is presented in a completely different way
@@ -392,12 +401,16 @@ This is because a histogram shows the distribution of one numerical variable. `g
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_col()
 ```
 
 ```{r}
 # Submit your answer:
-nigerm04_bar <- "YOUR ANSWER HERE"
+nigerm04_bar <- ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_col()
 
 # Ask for a hint:
 .HINT_nigerm04_bar()
@@ -442,7 +455,8 @@ Let's add **color** to our scatter plot.
 # Use a different color for each region 
 ggplot(data = nigerm96, 
        mapping = aes(x = week, 
-                     y = cases)) +
+                     y = cases,
+                     color = region)) +
   geom_point()
 ```
 
@@ -472,7 +486,7 @@ ggplot(data = nigerm96,
        mapping = aes(x = week, 
                      y = cases,
                      color = region)) +
-  geom_point()
+  geom_col()
 ```
 
 • The `color` aesthetic changes only the **border** around a shape
@@ -486,7 +500,7 @@ Let's fill the **inside** of the bars instead.
 ggplot(data = nigerm96, 
        mapping = aes(x = week, 
                      y = cases,
-                     color = region)) +
+                     fill = region)) +
   geom_col()
 ```
 
@@ -499,12 +513,18 @@ ggplot(data = nigerm96,
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases,
+                     color = region)) +
+  geom_line()
 ```
 
 ```{r}
 # Submit your answer:
-nigerm04_line <- "YOUR ANSWER HERE"
+nigerm04_line <- ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases,
+                     color = region)) +
+  geom_line()
 
 # Ask for a hint:
 .HINT_nigerm04_line()
@@ -541,7 +561,7 @@ Let's add **`color`** as a **fixed aesthetic** to our original scatter plot and 
 ggplot(data = nigerm96, 
        mapping = aes(x = week, 
                      y = cases)) +
-  geom_point()       
+  geom_point(color = "blue")       
 ```
 
 • Every point is the same color
@@ -573,7 +593,7 @@ ggplot(data = nigerm96,
        mapping = aes(x = week,
                      y = cases,
                      color = region)) +
-  geom_line()
+  geom_line(size = 1)
 ```
 
 Now it's your turn practice using **`fill`** as a fixed aesthetic to change the fill colors to a constant value on a bar plot.
@@ -585,18 +605,22 @@ Now it's your turn practice using **`fill`** as a fixed aesthetic to change the 
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_col(fill = "hotpink")
 ```
 
 ```{r}
 # Submit your answer:
-nigerm04_pinkbar <- "YOUR ANSWER HERE"
+nigerm04_pinkbar <- ggplot(data = nigerm04,
+       mapping = aes(x = week, y = cases)) +
+  geom_col(fill = "hotpink")
 
 # Ask for a hint:
 # .HINT_nigerm04_pinkbar()
 
 # Check your answer:
-# .CHECK_nigerm04_pinkbar()
+.CHECK_nigerm04_pinkbar()
 ```
 :::
 
