@@ -7,6 +7,8 @@ output:
     toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -53,7 +55,8 @@ By the end of this lesson, you will be able to:
 
 ```{r}
 # Load packages 
-pacman::p_load()
+pacman::p_load(tidyverse,
+               here)
 ```
 
 
@@ -89,7 +92,9 @@ Let's begin by visualizing the relationship between:
 
 ```{r}
 # Simple scatter plot of viral load vs age
-
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = viral_load)) +
+  geom_point()
 ```
 
 • Viral load generally **decreases** with age.
@@ -101,13 +106,17 @@ Time to practice plotting!
 
 ```{r}
 # Write code to create your plot:
-ggplot()
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point()
 ```
 
 ```{r}
 # When you think you have the right answer, submit it by replacing "YOUR ANSWER HERE" with your code, and run those lines.
 
-age_height <- "YOUR ANSWER HERE"
+age_height <- ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point()
 
 # Make sure that "age_height" appears in your Environment tab.
 ```
@@ -152,7 +161,7 @@ Let's map `height_cm` to the colors of our points:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point(mapping = aes(color = height_cm))
 ```
 
 • {ggplot2} has automatically **scales** the aesthetic to match values in the variable
@@ -168,7 +177,7 @@ Let's map a binary variable - `breastfeeding` - to color:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point(mapping = aes(color = breastfeeding))
 ```
 
 • Gradual, continuous color scaling
@@ -191,7 +200,7 @@ Add the `factor()` function around a variable to tell `ggplot()` to treat it as 
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point(mapping = aes(color = factor(breastfeeding)))
 ```
 
 • {ggplot2} assigns a unique level of aesthetic to each unique value of a factor
@@ -205,12 +214,16 @@ Adding colors let us visualize a **third variable**
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = viral_load)) +
+  geom_point(mapping = aes(color = freqrespi))
 ```
 
 ```{r}
 # Submit your answer:
-age_height_respi <- "YOUR ANSWER HERE"
+age_height_respi <- ggplot(data = malidd,
+       mapping = aes(x = age_months, y = viral_load)) +
+  geom_point(mapping = aes(color = freqrespi))
 
 # Ask for a hint:
 .HINT_age_height_respi()
@@ -223,12 +236,16 @@ age_height_respi <- "YOUR ANSWER HERE"
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(mapping = aes(color = factor(fever)))
 ```
 
 ```{r}
 # Submit your answer:
-age_height_fever <- "YOUR ANSWER HERE"
+age_height_fever <- ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(mapping = aes(color = factor(fever)))
 
 # Ask for a hint:
 .HINT_age_height_fever()
@@ -268,7 +285,7 @@ Change point color to steel blue:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point(color = "steelblue")
 ```
 
 Now we will modify the `size` aesthetic of the points by assigning it to a fixed number.
@@ -280,7 +297,8 @@ The default size is 1 mm, so let's chose a larger value:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point(color = "steelblue")
+  geom_point(color = "steelblue",
+             size = 2)
 ```
 
 • The `alpha` aesthetic controls the level of opacity of `geom`s.
@@ -295,7 +313,8 @@ ggplot(data = malidd,
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
   geom_point(color = "steelblue",
-             size = 2)
+             size = 2,
+             alpha = 0.75)
 ```
 
 
@@ -311,12 +330,22 @@ ggplot(data = malidd,
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = malidd, 
+       mapping = aes(x = age_months, 
+                     y = viral_load)) + 
+  geom_point(color = "cornflowerblue",
+             size = 3,
+             alpha = 0.60)
 ```
 
 ```{r}
 # Submit your answer:
-age_viral_blue <- "YOUR ANSWER HERE"
+age_viral_blue <- ggplot(data = malidd, 
+       mapping = aes(x = age_months, 
+                     y = viral_load)) + 
+  geom_point(color = "cornflowerblue",
+             size = 3,
+             alpha = 0.60)
 
 # Ask for a hint:
 .HINT_age_viral_blue()
@@ -351,7 +380,7 @@ Let's modify our original scatterplot by changing the shapes to a something that
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point(shape = 21)
 ```
 
 The `color` aesthetic only changes the outline of our points:
@@ -362,7 +391,8 @@ The `color` aesthetic only changes the outline of our points:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point(shape = 21)
+  geom_point(shape = 21,
+             color = "cyan4")
 ```
 
 Now let's fill in the points:
@@ -374,7 +404,8 @@ ggplot(data = malidd,
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
   geom_point(shape = 21,
-             color = "cyan4")
+             color = "cyan4",
+             fill = "seagreen")
 ```
 
 
@@ -391,7 +422,9 @@ We can improve the readability by increasing size and reducing opacity with `siz
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point(shape = 21,
+  geom_point(size = 3,
+             shape = 21,
+             alpha = 0.6,
              color = "cyan4",
              fill = "seagreen")
 ```
@@ -408,7 +441,8 @@ We will take our scatter plot and apply a smoothing line to with add another geo
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point()
+  geom_point() +
+  geom_smooth()
 ```
 
 • The smoothing line layer is plotted on top of the points
@@ -425,7 +459,7 @@ ggplot(data = malidd,
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
   geom_point() +
-  geom_smooth()
+  geom_smooth(method = "glm")
 ```
 
 • 95% confidence limits for these lines are displayed
@@ -438,7 +472,7 @@ ggplot(data = malidd,
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
   geom_point() +
-  geom_smooth(method = "glm")
+  geom_smooth(method = "glm", se = FALSE)
 ```
 
 We can also add `color` inside `geom_smooth()`:
@@ -450,7 +484,8 @@ ggplot(data = malidd,
                      y = viral_load)) + 
   geom_point() +
   geom_smooth(method = "glm",
-              se = FALSE)
+              se = FALSE,
+              color = "darkred")
 ```
 
 • A *negative relationship* exists between `age_months` and `viral_load`
@@ -468,7 +503,7 @@ We will map it to the color aesthetic:
 ggplot(data = malidd, 
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
-  geom_point() +
+  geom_point(mapping = aes(color = factor(vomit))) +
   geom_smooth(method = "glm",
               se = FALSE,
               color = "darkred")
@@ -481,9 +516,9 @@ ggplot(data = malidd,
        mapping = aes(x = age_months, 
                      y = viral_load)) + 
   geom_point(mapping = aes(color = factor(vomit))) +
-  geom_smooth(method = "glm",
-              se = FALSE,
-              color = "darkred")
+  geom_smooth(method = "gam",
+              color = "darkgray",
+              linewidth = 1.5)
 ```
 
 • The blue points mostly occur above the trend line 
@@ -494,12 +529,24 @@ ggplot(data = malidd,
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(color = "steelblue",
+             size = 2.5,
+             alpha = 0.80) +
+  geom_smooth(method = "lm",
+              color = "indianred3")
 ```
 
 ```{r}
 # Submit your answer:
-age_height_2 <- "YOUR ANSWER HERE"
+age_height_2 <- ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(color = "steelblue",
+             size = 2.5,
+             alpha = 0.80) +
+  geom_smooth(method = "lm",
+              color = "indianred3")
 
 # Ask for a hint:
 .HINT_age_height_2()
@@ -512,12 +559,28 @@ age_height_2 <- "YOUR ANSWER HERE"
 
 ```{r}
 # Write code to create your plot:
-
+ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(color = "steelblue",
+             size = 2.5,
+             alpha = 0.80,
+             shape = 23,
+             mapping = aes(fill = temp)) +
+  geom_smooth(method = "lm",
+              color = "indianred3")
 ```
 
 ```{r}
 # Submit your answer:
-age_height_3 <- "YOUR ANSWER HERE"
+age_height_3 <- ggplot(data = malidd,
+       mapping = aes(x = age_months, y = height_cm)) +
+  geom_point(color = "steelblue",
+             size = 2.5,
+             alpha = 0.80,
+             shape = 23,
+             mapping = aes(fill = temp)) +
+  geom_smooth(method = "lm",
+              color = "indianred3")
 
 # Ask for a hint:
 .HINT_age_height_3()
